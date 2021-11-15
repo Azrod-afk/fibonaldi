@@ -1,27 +1,31 @@
 import { DocumentNode } from "https://deno.land/x/graphql_deno@v15.0.0/mod.ts";
-import { MutationResolver, QueryResolver, RootResolver, UsersService } from "./mods.ts"
-import { Schema } from "./schema/Schema.ts"
+import {
+  MutationResolver,
+  QueryResolver,
+  RootResolver,
+  UsersService,
+} from "./mods.ts";
+import { Schema } from "./schema/Schema.ts";
 
-class FiboContext
-{
-    constructor()
-    {
-        const usersService = new UsersService();
-        
-        const queryResolver = new QueryResolver();
-        const mutationResolver = new MutationResolver();
-        this.rootResolver = new RootResolver(queryResolver, mutationResolver);
-    }
+class FiboContext {
+  constructor() {
+    const usersService = new UsersService();
 
-    private rootResolver : RootResolver;
+    this.rootResolver = new RootResolver(
+      new QueryResolver(),
+      new MutationResolver(),
+    );
+  }
 
-    Resolvers() : RootResolver {
-        return this.rootResolver;
-    }
+  private rootResolver: RootResolver;
 
-    Schema() : DocumentNode {
-        return Schema;
-    }
+  Resolvers(): RootResolver {
+    return this.rootResolver;
+  }
+
+  Schema(): DocumentNode {
+    return Schema;
+  }
 }
 
-export var Context = new FiboContext();
+export const Context: FiboContext = new FiboContext();
