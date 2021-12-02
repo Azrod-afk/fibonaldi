@@ -1,0 +1,7 @@
+allow:
+  - net
+
+scripts:
+  start: 
+    cmd: index.ts
+    watch: true
