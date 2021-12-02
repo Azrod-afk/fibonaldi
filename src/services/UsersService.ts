@@ -1,5 +1,6 @@
 import { User } from "../models/User.ts";
 import { IUsersService } from "./IUsersService.ts";
+import { Maybe } from "../mods.ts";
 
 export class UsersService implements IUsersService {
   constructor() {
@@ -10,18 +11,18 @@ export class UsersService implements IUsersService {
     return this._users;
   }
 
-  getUserByUsername(username: string): User | undefined {
-    return this._users.find((value) => value.username == username);
+  exists(username: string): boolean {
+      return this._users.some((value) => value.username() === username);
   }
 
-  createUser(username: string, password: string): User | null {
-    if (!this.getUserByUsername(username)) {
-      const user = new User(this._users.length + 1, username, password);
-      this._users.push(user);
-      return user;
-    }
+  getUserByUsername(username: string): Maybe<User> {
+    return this._users.find((value) => value.username() === username);
+  }
 
-    return null;
+  createUser(username: string, password: string): User {
+    const user = new User(this._users.length + 1, username, password);
+    this._users.push(user);
+    return user;
   }
 
   private _users: User[];

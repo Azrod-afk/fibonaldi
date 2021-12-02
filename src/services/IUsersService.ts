@@ -1,7 +1,9 @@
 import { User } from "../models/User.ts";
+import { Maybe } from "../mods.ts";
 
 export interface IUsersService {
   getAllUsers(): User[];
-  getUserByUsername(username: string): User | undefined;
-  createUser(username: string, password: string): User | null;
+  exists(username: string): boolean;
+  getUserByUsername(username: string): Maybe<User>;
+  createUser(username: string, password: string): User;
 }
